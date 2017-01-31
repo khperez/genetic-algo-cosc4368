@@ -36,23 +36,17 @@ public class GeneticAlgorithm {
 	}
 	
 	public static int calculateFitness(int chromosome) {
-		int fitness = 0, odd = 0, even = 0;
-		int oddMask = 0b1010101010;
-		int evenMask = 0b0101010101;
+		int fitness = 0;
 		
-		odd = chromosome & oddMask;
-		even = chromosome & evenMask;
-		
-		for (int i = 0; i < 10; i++) {
-			if ((odd & 1) == 1)
-				fitness++;
+		for (int count = 0; count < 10; count++) {
+			if (count % 2 == 0) {
+				if ((chromosome & 1) == 0)
+					fitness++;
+			}
 			else
-				odd = odd >> 1;
-			
-			if ((even & 1) == 0)
-				fitness++;
-			else
-				even = even >> 1;
+				if ((chromosome & 1) == 1)
+					fitness++;
+			chromosome = chromosome >> 1;
 		}
 		
 		return fitness;
