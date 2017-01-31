@@ -22,14 +22,28 @@ public class GeneticAlgorithm {
 	public static int[] crossover(int[] population, double pco) {
 		int crossoverTotal = (int) (pco * population.length);
 		int crossoverMask = 0b1111100000;
+		Random mateTime = new Random(System.currentTimeMillis());
 		for (int i = 0; i < crossoverTotal; i = i+2) {
 			int chromosomeA, chromosomeB, chromosomeY, chromosomeZ = 0;
 			chromosomeA = population[i] & crossoverMask;
 			chromosomeB = population[i+1] & ~crossoverMask;
 			chromosomeY = population[i] & ~crossoverMask;
 			chromosomeZ = population [i+1] & crossoverMask;
-			population[i] = chromosomeA | chromosomeB;
-			population[i+1] = chromosomeY | chromosomeZ;
+			
+			int chromoOne = mateTime.nextInt()%20;
+			while(chromoOne < 0)
+			{
+				chromoOne = mateTime.nextInt()%20;
+			}
+			population[chromoOne] = chromosomeA | chromosomeB;
+			int chromoTwo = mateTime.nextInt()%20;
+			while((chromoTwo < 0) || (chromoOne == chromoTwo))
+			{
+				chromoTwo = mateTime.nextInt()%20;	
+			}
+			System.out.println("chromoOne: " + chromoOne);
+			System.out.println("chromoTwo: " + chromoTwo);
+			population[chromoTwo] = chromosomeY | chromosomeZ;	
 		}
 		
 		return population;
@@ -39,7 +53,7 @@ public class GeneticAlgorithm {
 		int fitness = 0;
 		
 		for (int count = 0; count < 10; count++) {
-			if (count % 2 == 0) {
+			if (count % 2 == 0) { 
 				if ((chromosome & 1) == 0)
 					fitness++;
 			}
