@@ -41,8 +41,6 @@ public class GeneticAlgorithm {
 			{
 				chromoTwo = mateTime.nextInt()%20;	
 			}
-			System.out.println("chromoOne: " + chromoOne);
-			System.out.println("chromoTwo: " + chromoTwo);
 			population[chromoTwo] = chromosomeY | chromosomeZ;	
 		}
 		
@@ -89,17 +87,44 @@ public class GeneticAlgorithm {
 	}
 	
 	public static void main(String[] args) {
+		double pco = 0;
+		int[] nPco = new int[5];
+		String[] sPco = new String[5];
+		String mutStr = "";
+		String crossStr = "";
+		int[] population = randChromosomes();
+		for(int ii = 0 ; ii < 5 ; ii++)
+		{
+			switch(ii)
+			{
+				case 0:System.out.println("case: " + ii);
+						pco = 0.7;
+				break;
+				case 1:System.out.println("case: " + ii);
+						pco = 0.3;
+				break;
+				case 2:System.out.println("case: " + ii);
+						pco = 0.5;
+				break;
+				case 3:System.out.println("case: " + ii);
+						pco = 0.9;
+				break;
+				case 4:System.out.println("case: " + ii);
+						pco = 0;
+				break;
+				default:System.out.println("Error");
+				break;
+			}
 		
-			int[] population = randChromosomes();
 			int[] nextGeneration = new int[20], mutatedGeneration = new int[20];
-			double pco = 0.7;
+//			double pco = 0.7;
 			boolean maxFitnessAchieved = false;
 			int generationCount = 1;
 			
 			boolean fitnessMutation = false, fitnessCrossover = false;
 			
-			System.out.println("Initial Population");
-			System.out.println("Chromosome\tFitness value:");	
+//			System.out.println("Initial Population");
+//			System.out.println("Chromosome\tFitness value:");	
 			for(int i = 0; i < population.length; i++) {
 				System.out.println( String.format("%10s\t", 
 									Integer.toBinaryString(population[i])).replace(' ', '0') 
@@ -115,7 +140,7 @@ public class GeneticAlgorithm {
 				
 				nextGeneration = crossover(population, pco);
 				
-				System.out.println("Generation " + generationCount);
+//				System.out.println("Generation " + generationCount);
 				for(int i = 0; i < nextGeneration.length; i++) {
 					System.out.println( String.format("%10s\t", 
 										Integer.toBinaryString(nextGeneration[i])).replace(' ', '0') 
@@ -131,7 +156,7 @@ public class GeneticAlgorithm {
 				if (!maxFitnessAchieved) {
 							
 					mutatedGeneration = mutatorGenerator(nextGeneration);
-					System.out.println("Mutated generation: ");
+//					System.out.println("Mutated generation: ");
 					for(int i = 0; i < mutatedGeneration.length; i++) {
 						System.out.println( String.format("%10s\t", 
 											Integer.toBinaryString(mutatedGeneration[i])).replace(' ', '0') 
@@ -157,11 +182,21 @@ public class GeneticAlgorithm {
 			System.out.println("Max fitness achieved at generation " + generationCount);
 			if (fitnessMutation) {
 				System.out.println("By Mutation");
+				mutStr = "Mutation";
+				sPco[ii] = mutStr;
 			}
 			else if (fitnessCrossover){
-				System.out.println("By Cross-Over");
+				System.out.println("By Cross-Over");	
+				crossStr = "Cross-Over";
+				sPco[ii] = crossStr;
 			}	
-			
+			System.out.println("\n\n\n\n\n\n");
+			nPco[ii] = generationCount;
 		}
-
+		for(int i = 0 ; i < 5 ; i++)
+		{
+			System.out.println("mPco" + i + ": " + nPco[i]);
+			System.out.println("sPco: " + sPco[i]);
+		}
+	}
 }
