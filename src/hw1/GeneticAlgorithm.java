@@ -13,8 +13,6 @@ public class GeneticAlgorithm {
 		int crossoverMask = 0b1111100000;
 		for (int i = 0; i < crossoverTotal; i = i+2) {
 			int chromosomeA, chromosomeB, chromosomeY, chromosomeZ = 0;
-			System.out.println(String.format("%10s", Integer.toBinaryString(population[i])).replace(' ', '0'));
-			System.out.println(String.format("%10s", Integer.toBinaryString(population[i+1])).replace(' ', '0'));
 			chromosomeA = population[i] & crossoverMask;
 			chromosomeB = population[i+1] & ~crossoverMask;
 			chromosomeY = population[i] & ~crossoverMask;
@@ -27,32 +25,28 @@ public class GeneticAlgorithm {
 	}
 	
 	public static int calculateFitness(int chromosome) {
-		int fitness = 0, odd = 0, even = 0;
-		int oddMask = 0b1010101010;
-		int evenMask = 0b0101010101;
+		int fitness = 0;
 		
-		odd = chromosome & oddMask;
-		even = chromosome & evenMask;
-		
-		for (int i = 0; i < 10; i++) {
-			if ((odd & 1) == 1)
-				fitness++;
+		for (int count = 0; count < 10; count++) {
+			if (count % 2 == 0) {
+				if ((chromosome & 1) == 0)
+					fitness++;
+			}
 			else
-				odd = odd >> 1;
-			
-			if ((even & 1) == 0)
-				fitness++;
-			else
-				even = even >> 1;
+				if ((chromosome & 1) == 1)
+					fitness++;
+			chromosome = chromosome >> 1;
 		}
 		
 		return fitness;
 	}
 	public static void main(String[] args) {
 
-		int[] population = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+		int[] population = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
 		int[] nextGeneration;
+		int generationCount = 1;
 		double pco = 0.7;
+		boolean maxFitnessFound = false;
 		
 		System.out.println("Initial population: ");		
 		for(int i = 0; i < population.length; i++) {
@@ -61,6 +55,7 @@ public class GeneticAlgorithm {
 		}
 		
 		nextGeneration = crossover(population, pco);
+		generationCount++;
 		
 		System.out.println("Next generation: ");
 		for(int i = 0; i < nextGeneration.length; i++) {
