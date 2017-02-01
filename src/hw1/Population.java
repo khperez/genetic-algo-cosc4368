@@ -7,7 +7,8 @@ public class Population {
 	private String maxFitMethod;
 	private int[] chromosomes;
 	private static int genCount;
-
+	private static int counter=0;
+	private static int genCountAvg=0;
 	Population(){
 		maxFitMethod = null;
 		chromosomes = randChromosomes();
@@ -147,5 +148,12 @@ public class Population {
 	
 	public int getGenCount() {
 		return genCount;
+	}
+	
+	public int getGenCountAvg(int genCount)
+	{
+		genCountAvg += genCount/counter;
+		counter++;
+		return genCountAvg;
 	}
 }
