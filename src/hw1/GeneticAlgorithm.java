@@ -40,6 +40,28 @@ public class GeneticAlgorithm {
 			System.out.println(popEx[i].getMaxFitMethod()+"\n\n\n");
 			popEx[i].getGenCountAvg(popEx[i].getGenCount());
 		}
+		
+		/*
+		 * Experiment 2
+		 * Run genetic algorithm with pco:
+		 * i) 0.3
+		 * ii) 0.5
+		 * iii) 0.9
+		 * iv) 0
+		 * 
+		 */
+		
+		double[] pcoList = {0.3, 0.5, 0.9, 0};
+		Population popEx2 = new Population();
+		
+		Population[] populations = new Population[pcoList.length];
+		
+		for (int i = 0; i < pcoList.length; i++) {
+			popEx2.setPco(pcoList[i]);
+			populations[i] = popEx2;
+			populations[i].printPopulation();
+			System.out.println("pco value: " + populations[i].getPco());
+		}
 	}
 		
 }
