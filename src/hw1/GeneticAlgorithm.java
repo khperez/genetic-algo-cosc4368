@@ -15,28 +15,31 @@ public class GeneticAlgorithm {
 		 *  
 		 */
 		
-		Population popEx1 = new Population();
+		Population[] popEx = new Population[20];
+		double[] pco = {0.7,0.3,0.5,0.9,0};
+		for(int i = 0 ; i < popEx.length ; i++)
+		{
+			popEx[i] = new Population();
+			popEx[i].printPopulation();
 		
-		double pco = 0.7;
-		
-		popEx1.printPopulation();
-
-		while (!popEx1.maxFitnessAchieved()) {
-			popEx1.crossover(pco);
-			popEx1.printPopulation();
-			if (!popEx1.maxFitnessAchieved()) {
-				popEx1.mutate();
-				if (popEx1.maxFitnessAchieved()){
-					popEx1.setMaxFitMethod(mutation);
+			while (!popEx[i].maxFitnessAchieved()) {
+				popEx[i].crossover(pco[1]);
+//				popEx[i].printPopulation();
+				if (!popEx[i].maxFitnessAchieved()) {
+					popEx[i].mutate();
+					if (popEx[i].maxFitnessAchieved()){
+						popEx[i].setMaxFitMethod(mutation);
+					}
 				}
+				else {
+					popEx[i].setMaxFitMethod(crossover);
+				}
+				
 			}
-			else {
-				popEx1.setMaxFitMethod(crossover);
-			}
-			
+			System.out.println(popEx[i].getGenCount());
+			System.out.println(popEx[i].getMaxFitMethod()+"\n\n\n");
+			popEx[i].getGenCountAvg(popEx[i].getGenCount());
 		}
-		System.out.println(popEx1.getGenCount());
-		System.out.println(popEx1.getMaxFitMethod());
 	}
 		
 }
