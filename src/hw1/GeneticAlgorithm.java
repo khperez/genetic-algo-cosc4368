@@ -37,8 +37,9 @@ public class GeneticAlgorithm {
 				
 			}
 			System.out.println(popEx[i].getGenCount());
+			popEx[i].setGenCountAvg(popEx[i].getGenCount());
 			System.out.println(popEx[i].getMaxFitMethod()+"\n\n\n");
-			popEx[i].getGenCountAvg(popEx[i].getGenCount());
+			popEx[i].getGenCountAvg();
 		}
 	}
 		

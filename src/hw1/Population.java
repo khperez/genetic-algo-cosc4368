@@ -150,10 +150,15 @@ public class Population {
 		return genCount;
 	}
 	
-	public int getGenCountAvg(int genCount)
+	public int setGenCountAvg(int genCount)
 	{
-		genCountAvg += genCount/counter;
 		counter++;
+		genCountAvg += genCount/counter;
 		return genCountAvg;
+	}
+	
+	public void getGenCountAvg()
+	{
+		System.out.println("Generation Count Average: " + genCountAvg);
 	}
 }
