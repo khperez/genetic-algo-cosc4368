@@ -83,20 +83,7 @@ public class Population {
 	
 	public boolean maxFitnessAchieved() {		
 		for (int i = 0; i < chromosomes.length; i++) {
-			int fitness = 0;
-			for (int count = 0; count < 10; count++) {
-				if (count % 2 == 0) {
-					if ((chromosomes[i] & 1) == 0) {
-						fitness++;
-					}
-				}
-				else
-					if ((chromosomes[i] & 1) == 1) {
-						fitness++;
-					}
-				chromosomes[i] = chromosomes[i] >> 1;
-			}
-			if (fitness == 10) {
+			if (getFitnessValue(chromosomes[i]) == 10) {
 				return true;
 			}
 		}
@@ -128,6 +115,10 @@ public class Population {
 	
 	public void setMaxFitMethod(String maxFitMethod) {
 		this.maxFitMethod = maxFitMethod;
+	}
+	
+	public String getMaxFitMethod() {
+		return maxFitMethod;
 	}
 	
 	public void printChromosomes() {
