@@ -5,13 +5,13 @@ import java.util.Random;
 public class Population {
 	
 	private String maxFitMethod;
-	private int maxFitGen;
 	private int[] chromosomes;
+	private static int genCount;
 
 	Population(){
 		maxFitMethod = null;
-		maxFitGen = 0;
 		chromosomes = randChromosomes();
+		genCount = 1;
 	}
 	
 	private int[] randChromosomes() 
@@ -30,22 +30,37 @@ public class Population {
         return genChromosome;
     }
 	
-	public int[] crossover(double pco) {
-		int[] population = this.chromosomes;
-		int crossoverTotal = (int) (pco * population.length);
+	public void crossover(double pco) {
+		genCount++;
+		int crossoverTotal = (int) (pco * chromosomes.length);
 		int crossoverMask = 0b1111100000;
 		for (int i = 0; i < crossoverTotal; i = i+2) {
-			int chromosomeA, chromosomeB, chromosomeY, chromosomeZ = 0;
-			chromosomeA = population[i] & crossoverMask;
-			chromosomeB = population[i+1] & ~crossoverMask;
-			chromosomeY = population[i] & ~crossoverMask;
-			chromosomeZ = population [i+1] & crossoverMask;
-			population[i] = chromosomeA | chromosomeB;
-			population[i+1] = chromosomeY | chromosomeZ;
+			int chromosomeA = 0, chromosomeB = 0, chromosomeY = 0, chromosomeZ = 0;
+			chromosomeA = chromosomes[i] & crossoverMask;
+			chromosomeB = chromosomes[i+1] & ~crossoverMask;
+			chromosomeY = chromosomes[i] & ~crossoverMask;
+			chromosomeZ = chromosomes[i+1] & crossoverMask;
+			chromosomes[i] = chromosomeA | chromosomeB;
+			chromosomes[i+1] = chromosomeY | chromosomeZ;
 		}
-		
-		return population;
 	}
+	
+	public void mutate(){
+		Random select = new Random(System.currentTimeMillis());
+		int mutator = select.nextInt()%20;
+		while(mutator < 0){
+			mutator = select.nextInt()%20;
+		}
+		int chromosome = chromosomes[mutator];
+		int mutatedBit = select.nextInt()%10;
+		while(mutatedBit < 0){
+			mutatedBit = select.nextInt()%10;
+		}
+		int mask = 1;
+		int mutatedChromosome = chromosome ^ (mask << mutatedBit);
+		chromosomes[mutator] = mutatedChromosome;
+	}
+
 	
 	public boolean maxFitnessAchieved() {		
 		for (int i = 0; i < chromosomes.length; i++) {
@@ -109,5 +124,18 @@ public class Population {
 		for (int i = 0; i < chromosomes.length; i++) {
 			System.out.println(getFitnessValue(chromosomes[i]));
 		}
+	}
+	
+	public void printPopulation() {
+		System.out.println("Chromosome:\tFitness Value:");
+		for (int i = 0; i < chromosomes.length; i++) {
+			System.out.println(String.format("%10s\t", 
+					Integer.toBinaryString(chromosomes[i])).replace(' ', '0')
+					+ getFitnessValue(chromosomes[i]));
+		}
+	}
+	
+	public int getGenCount() {
+		return genCount;
 	}
 }
