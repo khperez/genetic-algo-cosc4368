@@ -17,11 +17,9 @@ public class GeneticAlgorithm {
 		double pco = 0.7;
 		
 		popEx1.printPopulation();
-		
-		for (int i = 1; i < 3; i++) {
-			popEx1.crossover(pco);
-			popEx1.printPopulation();
-		}
+
+		popEx1.crossover(pco);
+		popEx1.printPopulation();
 		
 		System.out.println(popEx1.getGenCount());
 		
