@@ -18,7 +18,7 @@ public class GeneticAlgorithm {
 		
 		popEx1.printPopulation();
 		
-		for (int i = 1; i < 20; i++) {
+		for (int i = 1; i < 3; i++) {
 			popEx1.crossover(pco);
 			popEx1.printPopulation();
 		}
