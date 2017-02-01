@@ -9,6 +9,8 @@ public class Population {
 	private static int genCount;
 	private static int counter=0;
 	private static int genCountAvg=0;
+	private double pco;
+	
 	Population(){
 		maxFitMethod = null;
 		chromosomes = randChromosomes();
@@ -155,5 +157,13 @@ public class Population {
 		genCountAvg += genCount/counter;
 		counter++;
 		return genCountAvg;
+	}
+	
+	public double getPco() {
+		return pco;
+	}
+	
+	public void setPco(double pco) {
+		this.pco = pco;
 	}
 }
