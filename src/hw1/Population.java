@@ -9,27 +9,28 @@ public class Population {
 	private static int genCount;
 	private static int counter=0;
 	private static int genCountAvg=0;
-	Population(){
+	Population(int randSeed){
 		maxFitMethod = null;
-		chromosomes = randChromosomes();
+		chromosomes = randChromosomes(randSeed);
 		genCount = 1;
 	}
-	
-	private int[] randChromosomes() 
-    {
-		Random randChromo = new Random(System.currentTimeMillis());
-        int genChromosome[] = new int[20];
-        int j = 0;
-        while(j < 20)
-        {
-        	genChromosome[j] = randChromo.nextInt()%682 + 1;
-        	if((genChromosome[j] > 0) && (genChromosome[j] < 682))
-        	{
-        		j++;
-        	}
-        }
-        return genChromosome;
-    }
+
+	public static int[] randChromosomes(int randSeed) 
+	   {
+		  Random randChromo = new Random(randSeed);
+		  int genChromosome[] = new int[20];
+		  int j = 0;
+		  while(j < 20)
+		  {
+		    genChromosome[j] = randChromo.nextInt()%1023 + 1;
+		    if((genChromosome[j] > 0) && (genChromosome[j] < 1023))
+		    {
+		    	System.out.println(genChromosome[j]);
+			    j++;
+		    }
+		  }
+		  return genChromosome;
+	   }
 	
 	private static void shuffleArray(int[] array)
 	{
@@ -153,7 +154,8 @@ public class Population {
 	public int setGenCountAvg(int genCount)
 	{
 		counter++;
-		genCountAvg += genCount/counter;
+		genCountAvg += genCount;
+		genCountAvg /= counter;
 		return genCountAvg;
 	}
 	
