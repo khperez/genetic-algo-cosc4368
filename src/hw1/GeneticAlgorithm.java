@@ -1,5 +1,5 @@
 package hw1;
-
+import java.util.Random;
 public class GeneticAlgorithm {
 			
 	public static void main(String[] args) {
@@ -14,12 +14,12 @@ public class GeneticAlgorithm {
 		 * fitness value.
 		 *  
 		 */
-		
+	    int seedVal = (int) System.currentTimeMillis();
 		Population[] popEx = new Population[20];
 		double[] pco = {0.7,0.3,0.5,0.9,0};
 		for(int i = 0 ; i < popEx.length ; i++)
 		{
-			popEx[i] = new Population();
+			popEx[i] = new Population(seedVal);
 			popEx[i].printPopulation();
 		
 			while (!popEx[i].maxFitnessAchieved()) {
@@ -38,9 +38,11 @@ public class GeneticAlgorithm {
 			}
 			System.out.println(popEx[i].getGenCount());
 			popEx[i].setGenCountAvg(popEx[i].getGenCount());
-			System.out.println(popEx[i].getMaxFitMethod()+"\n\n\n");
 			popEx[i].getGenCountAvg();
+			System.out.println(popEx[i].getMaxFitMethod()+"\n\n\n");
 		}
 	}
-		
+
+	
+	
 }
