@@ -9,14 +9,35 @@ public class Population {
 	private static int genCount;
 	private static int counter=0;
 	private static int genCountAvg=0;
+	private double pco;
+	
+	Population(double pco){
+		this.pco = pco;
+		this.chromosomes = randChromosomes();
+	}
+	
 	Population(int randSeed){
 		maxFitMethod = null;
 		chromosomes = randChromosomes(randSeed);
 		genCount = 1;
 	}
+	
+	public static int[] randChromosomes(){
+		  Random randChromo = new Random(System.currentTimeMillis());
+		  int genChromosome[] = new int[20];
+		  int j = 0;
+		  while(j < 20)
+		  {
+		    genChromosome[j] = randChromo.nextInt()%1023 + 1;
+		    if((genChromosome[j] > 0) && (genChromosome[j] < 1023))
+		    {
+			    j++;
+		    }
+		  }
+		  return genChromosome;
+	 }
 
-	public static int[] randChromosomes(int randSeed) 
-	   {
+	public static int[] randChromosomes(int randSeed){
 		  Random randChromo = new Random(randSeed);
 		  int genChromosome[] = new int[20];
 		  int j = 0;
@@ -25,12 +46,11 @@ public class Population {
 		    genChromosome[j] = randChromo.nextInt()%1023 + 1;
 		    if((genChromosome[j] > 0) && (genChromosome[j] < 1023))
 		    {
-		    	System.out.println(genChromosome[j]);
 			    j++;
 		    }
 		  }
 		  return genChromosome;
-	   }
+	 }
 	
 	private static void shuffleArray(int[] array)
 	{
@@ -48,7 +68,7 @@ public class Population {
 	    }
 	}
 	
-	public void crossover(double pco) {
+	public void crossover() {
 		for (int i = 0; i < chromosomes.length; i++) {
 			shuffleArray(chromosomes);
 		}
@@ -162,5 +182,13 @@ public class Population {
 	public void getGenCountAvg()
 	{
 		System.out.println("Generation Count Average: " + genCountAvg);
+	}
+	
+	public void setPco(double pco) {
+		this.pco = pco;
+	}
+	
+	public double getPco() {
+		return pco;
 	}
 }
