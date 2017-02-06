@@ -1,12 +1,16 @@
 package hw1;
 
+import org.jfree.ui.RefineryUtilities;
+
 public class GeneticAlgorithm {
 			
+	@SuppressWarnings("null")
 	public static void main(String[] args) {
 		
 		String crossover = "cross-over";
 		String mutation = "mutation";
-		
+		int[] popCount = new int[20]; //Population Counter Array used for plot
+		int[] pcoCount = new int[4]; //used to count the average of PCO generations
 		/* 
 		 * Experiment 1
 		 * Run genetic algorithm 20 times at pco = 0.7
@@ -20,7 +24,6 @@ public class GeneticAlgorithm {
 		{
 			popEx[i] = new Population(0.7);
 			popEx[i].printPopulation();
-			
 			while (!popEx[i].maxFitnessAchieved()) {
 				popEx[i].crossover();
 				if (!popEx[i].maxFitnessAchieved()) {
@@ -35,11 +38,17 @@ public class GeneticAlgorithm {
 				
 			}
 			System.out.println(popEx[i].getGenCount());
-			popEx[i].setGenCountAvg(popEx[i].getGenCount());
-			popEx[i].getGenCountAvg();
 			System.out.println(popEx[i].getMaxFitMethod()+"\n\n\n");
+			popCount[i] = popEx[i].getGenCount();
 		}
 		
+		PopulationPlot popChart = new PopulationPlot(
+				"Experiment 1", 
+				"Experiment 1", popCount);
+		
+		popChart.pack();
+	    popChart.setVisible(true);
+	   
 		/* 
 		 * Experiment 2
 		 * Perform experiment 1 with same initial population for each run:
@@ -49,36 +58,70 @@ public class GeneticAlgorithm {
 		 * iv) pco = 0
 		 * 
 		 */
-		
+		int j = 0;
+		int pcoCounters = 0;
+		int[] avgPco = new int[4];
+		int[][] pcoPop = new int[4][20];
 		int seedVal = (int) System.currentTimeMillis();
-		Population[] populations = new Population[20];
+		Population[] populations = new Population[4];
 		double[] pco = {0.3, 0.5, 0.9, 0};
-		for(int i = 0 ; i < pco.length ; i++)
+		for(int pcoLoop = 1 ; pcoLoop < 21 ; pcoLoop++)
 		{
-			populations[i] = new Population(seedVal);
-			populations[i].setPco(pco[i]);
-			System.out.println("====PCO " + populations[i].getPco() + "====");
-			
-			populations[i].printPopulation();
-		
-			while (!populations[i].maxFitnessAchieved()) {
-				populations[i].crossover();
-				if (!populations[i].maxFitnessAchieved()) {
-					populations[i].mutate();
-					if (populations[i].maxFitnessAchieved()){
-						populations[i].setMaxFitMethod(mutation);
-					}
-				}
-				else {
-					populations[i].setMaxFitMethod(crossover);
-				}
+			for(int i = 0 ; i < pco.length ; i++)
+			{
+				populations[i] = new Population(seedVal);
+				populations[i].setPco(pco[i]);
+				System.out.println("====PCO " + populations[i].getPco() + "====");
 				
+				populations[i].printPopulation();
+			
+				while (!populations[i].maxFitnessAchieved()) {
+					populations[i].crossover();
+					if (!populations[i].maxFitnessAchieved()) {
+						populations[i].mutate();
+						if (populations[i].maxFitnessAchieved()){
+							populations[i].setMaxFitMethod(mutation);
+						}
+					}
+					else {
+						populations[i].setMaxFitMethod(crossover);
+					}
+					
+				}
+				System.out.println(populations[i].getGenCount());
+				System.out.println(populations[i].getMaxFitMethod()+"\n\n\n");
+				pcoCount[i] = populations[i].getGenCount();
+				pcoCounters += pcoCount[i];
+				pcoPop[i][pcoLoop] = populations[i].getGenCount();
 			}
-			System.out.println(populations[i].getGenCount());
-			populations[i].setGenCountAvg(populations[i].getGenCount());
-			populations[i].getGenCountAvg();
-			System.out.println(populations[i].getMaxFitMethod()+"\n\n\n");
+			if(pcoLoop%5 == 0)
+			{
+				avgPco[j] = pcoCounters/20;
+				++j;
+			}
 		}
+		for(int a = 0 ; a < 4 ; a++)
+		{
+			System.out.println(avgPco[a]);
+		}
+		PopulationPlot[] pcoChart = null;
+		for(int ii = 0 ; ii < 4 ; ii++)
+		{
+			pcoChart[ii] = new PopulationPlot(
+					"Experiment 1", 
+					"Experiment 1", pcoPop[ii]);
+				pcoChart[ii].pack();
+				pcoChart[ii].setVisible(true);
+		}
+		
+		
+		PopulationPlot pcoChartAvg = new PopulationPlot(
+				"Experiment 2: PCO Averages" , 
+				"Experiment 2: PCO Averages", pco, avgPco);
+		
+		pcoChartAvg.pack();
+	    RefineryUtilities.centerFrameOnScreen(pcoChartAvg);
+	    pcoChartAvg.setVisible(true);
 	}
 
 	
