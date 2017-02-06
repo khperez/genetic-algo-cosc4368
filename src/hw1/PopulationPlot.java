@@ -14,7 +14,7 @@ public class PopulationPlot extends ApplicationFrame
 	{
 		super(applicationTitle);
 		JFreeChart lineChart = ChartFactory.createBarChart3D(
-			chartTitle,"Chromosomes", "Number of Generations", createDataset(popCount), PlotOrientation.VERTICAL, true,true,false);
+			chartTitle,"Number of Runs", "Number of Generations", createDataset(popCount), PlotOrientation.VERTICAL, true,true,false);
          
 		ChartPanel chartPanel = new ChartPanel(lineChart);
 		chartPanel.setPreferredSize( new java.awt.Dimension(500 , 300));
@@ -32,6 +32,7 @@ public class PopulationPlot extends ApplicationFrame
 		setContentPane(chartPanel);
 	}
 	
+
 	public DefaultCategoryDataset createDataset(int[] popCount)
 	{
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();

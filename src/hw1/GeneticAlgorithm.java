@@ -4,12 +4,11 @@ import org.jfree.ui.RefineryUtilities;
 
 public class GeneticAlgorithm {
 			
+	@SuppressWarnings("null")
 	public static void main(String[] args) {
 		
 		String crossover = "cross-over";
 		String mutation = "mutation";
-		int counter = 0;
-		int total = 0;
 		int[] popCount = new int[20];
 		int[] pcoCount = new int[4];
 		/* 
@@ -39,16 +38,13 @@ public class GeneticAlgorithm {
 				
 			}
 			System.out.println(popEx[i].getGenCount());
-			counter++;
-			total += popEx[i].getGenCount();
-			System.out.println("Average Count = " + total/counter);
 			System.out.println(popEx[i].getMaxFitMethod()+"\n\n\n");
 			popCount[i] = popEx[i].getGenCount();
 		}
 		
 		PopulationPlot popChart = new PopulationPlot(
-				"Generations vs Chromosomes", 
-				"Number of Generations vs Chromosomes", popCount);
+				"Experiment 1", 
+				"Experiment 1", popCount);
 		
 		popChart.pack();
 	    popChart.setVisible(true);
@@ -62,13 +58,12 @@ public class GeneticAlgorithm {
 		 * iv) pco = 0
 		 * 
 		 */
-		counter = 0;
-		total = 0;
 		int j = 0;
 		int pcoCounters = 0;
 		int[] avgPco = new int[4];
+		int[][] pcoPop = new int[4][20];
 		int seedVal = (int) System.currentTimeMillis();
-		Population[] populations = new Population[20];
+		Population[] populations = new Population[4];
 		double[] pco = {0.3, 0.5, 0.9, 0};
 		for(int pcoLoop = 1 ; pcoLoop < 21 ; pcoLoop++)
 		{
@@ -94,14 +89,11 @@ public class GeneticAlgorithm {
 					
 				}
 				System.out.println(populations[i].getGenCount());
-				counter++;
-				total += popEx[i].getGenCount();
-				System.out.println("Average Count = " + total/counter);
 				System.out.println(populations[i].getMaxFitMethod()+"\n\n\n");
-				pcoCount[i] = popEx[i].getGenCount();
+				pcoCount[i] = populations[i].getGenCount();
 				pcoCounters += pcoCount[i];
+				pcoPop[i][pcoLoop] = populations[i].getGenCount();
 			}
-			System.out.println("j:" + j + " pcoLoop:" + pcoLoop);
 			if(pcoLoop%5 == 0)
 			{
 				avgPco[j] = pcoCounters/20;
@@ -112,13 +104,24 @@ public class GeneticAlgorithm {
 		{
 			System.out.println(avgPco[a]);
 		}
-		PopulationPlot pcoChart = new PopulationPlot(
-				"Generations vs PCO", 
-				"Number of Generations vs PCO", pco, pcoCount);
+		PopulationPlot[] pcoChart = null;
+		for(int ii = 0 ; ii < 4 ; ii++)
+		{
+			pcoChart[ii] = new PopulationPlot(
+					"Experiment 1", 
+					"Experiment 1", pcoPop[ii]);
+				pcoChart[ii].pack();
+				pcoChart[ii].setVisible(true);
+		}
 		
-		pcoChart.pack();
-	    RefineryUtilities.centerFrameOnScreen(pcoChart);
-	    pcoChart.setVisible(true);
+		
+		PopulationPlot pcoChartAvg = new PopulationPlot(
+				"Experiment 2: PCO Averages" , 
+				"Experiment 2: PCO Averages", pco, avgPco);
+		
+		pcoChartAvg.pack();
+	    RefineryUtilities.centerFrameOnScreen(pcoChartAvg);
+	    pcoChartAvg.setVisible(true);
 	}
 
 	
