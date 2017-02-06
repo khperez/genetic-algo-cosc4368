@@ -1,12 +1,14 @@
 package hw1;
 
 import java.util.Random;
+import java.util.TreeMap;
+import java.util.Vector;
 
 public class Population {
 	
 	private String maxFitMethod;
 	private int[] chromosomes;
-	private static int genCount;
+	private int genCount;
 	private static int counter=0;
 	private static int genCountAvg=0;
 	private double pco;
@@ -52,38 +54,72 @@ public class Population {
 		  return genChromosome;
 	 }
 	
-	private static void shuffleArray(int[] array)
-	{
-	    int index;
-	    Random random = new Random();
-	    for (int i = array.length - 1; i > 0; i--)
-	    {
-	        index = random.nextInt(i + 1);
-	        if (index != i)
-	        {
-	            array[index] ^= array[i];
-	            array[i] ^= array[index];
-	            array[index] ^= array[i];
-	        }
-	    }
-	}
-	
 	public void crossover() {
-		for (int i = 0; i < chromosomes.length; i++) {
-			shuffleArray(chromosomes);
-		}
+		TreeMap<Integer, Integer> chromoCollection = new TreeMap<Integer, Integer>();
+		Vector<Integer> chromoVector = new Vector<Integer>();
+		Vector<Integer> resultVector = new Vector<Integer>();
+		Vector<Integer> mergeVector = new Vector<Integer>();
 		genCount++;
+		int[] chromo = new int[2];
+		double randChromo;
+		int chromoVal;
+		int chromosomeA, chromosomeB, chromosomeY, chromosomeZ;
+		int totalWeight = 0;
+		int total = 0;
+		int vecIndex = 0;
 		int crossoverTotal = (int) (pco * chromosomes.length);
 		int crossoverMask = 0b1111100000;
-		for (int i = 0; i < crossoverTotal; i = i+2) {
-			int chromosomeA = 0, chromosomeB = 0, chromosomeY = 0, chromosomeZ = 0;
-			chromosomeA = chromosomes[i] & crossoverMask;
-			chromosomeB = chromosomes[i+1] & ~crossoverMask;
-			chromosomeY = chromosomes[i] & ~crossoverMask;
-			chromosomeZ = chromosomes[i+1] & crossoverMask;
-			chromosomes[i] = chromosomeA | chromosomeB;
-			chromosomes[i+1] = chromosomeY | chromosomeZ;
+		// Initialize vector with chromosomes
+		for (int chromosome: chromosomes) {
+			chromoVector.add(chromosome);
+			chromoVal = getFitnessValue(chromosome);
+			totalWeight += chromoVal;
+			chromoCollection.put(totalWeight, chromosome);
 		}
+		while (total < crossoverTotal){
+			if (total != 0) {
+				chromoCollection.clear();
+				totalWeight = 0;
+				for (int chromosome: chromoVector) {
+					chromoVal = getFitnessValue(chromosome);
+					totalWeight += chromoVal;
+					chromoCollection.put(totalWeight, chromosome);
+				}
+			}
+			// Randomly select two chromosomes to apply cross-over
+			for (int count = 0; count < 2; count++) {
+				randChromo = Math.random() * totalWeight;
+				int key = chromoCollection.ceilingKey((int) randChromo);
+				chromo[count] = chromoCollection.remove(key);
+				chromoCollection.clear();
+				totalWeight = 0;
+				for (int chromosome: chromoVector) {
+					chromoVal = getFitnessValue(chromosome);
+					totalWeight += chromoVal;
+					chromoCollection.put(totalWeight, chromosome);
+				}
+				chromoVector.remove((Object) chromo[count]);
+			}
+			chromosomeA = chromo[vecIndex] & crossoverMask;
+			chromosomeB = chromo[vecIndex+1] & ~crossoverMask;
+			chromosomeY = chromo[vecIndex] & ~crossoverMask;
+			chromosomeZ = chromo[vecIndex+1] & crossoverMask;
+			resultVector.add(chromosomeA | chromosomeB);
+			resultVector.add(chromosomeY | chromosomeZ);
+			total += 2;
+		}
+		// Merge chromosomes unaffected by cross-over
+		mergeVector = mergeVectors(resultVector, chromoVector);
+		for (int i = 0; i < chromosomes.length; i++) {
+			chromosomes[i] = mergeVector.get(i);
+		}
+	}
+	
+	private static Vector<Integer> mergeVectors(Vector<Integer> vectorA, Vector<Integer> vectorB){
+		Vector<Integer> merge = new Vector<Integer>();
+		merge.addAll(vectorA);
+		merge.addAll(vectorB);
+		return merge;
 	}
 	
 	public void mutate(){
@@ -191,4 +227,6 @@ public class Population {
 	public double getPco() {
 		return pco;
 	}
+	
+
 }

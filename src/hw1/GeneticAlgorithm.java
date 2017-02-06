@@ -20,7 +20,7 @@ public class GeneticAlgorithm {
 		{
 			popEx[i] = new Population(0.7);
 			popEx[i].printPopulation();
-		
+			
 			while (!popEx[i].maxFitnessAchieved()) {
 				popEx[i].crossover();
 				if (!popEx[i].maxFitnessAchieved()) {
