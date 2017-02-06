@@ -6,7 +6,7 @@ public class Population {
 	
 	private String maxFitMethod;
 	private int[] chromosomes;
-	private static int genCount;
+	private int genCount;
 	private static int counter=0;
 	private static int genCountAvg=0;
 	private double pco;
@@ -174,6 +174,7 @@ public class Population {
 	public int setGenCountAvg(int genCount)
 	{
 		counter++;
+		System.out.println("Counter: " + counter);
 		genCountAvg += genCount;
 		genCountAvg /= counter;
 		return genCountAvg;
@@ -190,5 +191,9 @@ public class Population {
 	
 	public double getPco() {
 		return pco;
+	}
+
+	public void setGenCount(int genCount) {
+		this.genCount = genCount;
 	}
 }
