@@ -4,17 +4,17 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+@SuppressWarnings("serial")
 public class PopulationPlot extends ApplicationFrame
 {
 	public PopulationPlot(String applicationTitle, String chartTitle, int[] popCount)
 	{
 		super(applicationTitle);
 		JFreeChart lineChart = ChartFactory.createBarChart3D(
-			chartTitle,"Chromosomes", "Number of Generation", createDataset(popCount), PlotOrientation.VERTICAL, true,true,false);
+			chartTitle,"Chromosomes", "Number of Generations", createDataset(popCount), PlotOrientation.VERTICAL, true,true,false);
          
 		ChartPanel chartPanel = new ChartPanel(lineChart);
 		chartPanel.setPreferredSize( new java.awt.Dimension(500 , 300));
@@ -25,12 +25,13 @@ public class PopulationPlot extends ApplicationFrame
 	{
 		super(applicationTitle);
 		JFreeChart lineChart = ChartFactory.createBarChart3D(
-			chartTitle,"Chromosomes", "Number of Generation", createDataset2(popPco, popCount), PlotOrientation.VERTICAL, true,true,false);
+			chartTitle,"PCO", "Number of Generations", createDataset2(popPco, popCount), PlotOrientation.VERTICAL, true,true,false);
          
 		ChartPanel chartPanel = new ChartPanel(lineChart);
 		chartPanel.setPreferredSize( new java.awt.Dimension(500 , 300));
 		setContentPane(chartPanel);
 	}
+	
 	public DefaultCategoryDataset createDataset(int[] popCount)
 	{
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();

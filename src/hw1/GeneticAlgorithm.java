@@ -52,7 +52,6 @@ public class GeneticAlgorithm {
 				"Number of Generations vs Chromosomes", popCount);
 		
 		popChart.pack();
-//	    RefineryUtilities.centerFrameOnScreen(popChart);
 	    popChart.setVisible(true);
 	   
 		/* 
