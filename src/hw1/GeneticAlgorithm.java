@@ -4,13 +4,12 @@ import org.jfree.ui.RefineryUtilities;
 
 public class GeneticAlgorithm {
 			
-	@SuppressWarnings("null")
 	public static void main(String[] args) {
 		
 		String crossover = "cross-over";
 		String mutation = "mutation";
 		int[] popCount = new int[20];
-		int[] pcoCount = new int[4];
+
 		/* 
 		 * Experiment 1
 		 * Run genetic algorithm 20 times at pco = 0.7
@@ -55,28 +54,33 @@ public class GeneticAlgorithm {
 		 * i) pco = 0.3
 		 * ii) pco = 0.5
 		 * iii) pco = 0.9
-		 * iv) pco = 0
+		 * iv) pco = 0 (no cross-over)
 		 * 
 		 */
-		int j = 0;
-		int pcoCounters = 0;
-		int[] avgPco = new int[4];
-		int[][] pcoPop = new int[4][20];
+
 		int seedVal = (int) System.currentTimeMillis();
-		Population[] populations = new Population[4];
 		double[] pco = {0.3, 0.5, 0.9, 0};
-		for(int pcoLoop = 1 ; pcoLoop < 21 ; pcoLoop++)
-		{
-			for(int i = 0 ; i < pco.length ; i++)
-			{
+		int totalRuns = 20;
+		int[][] genCountPerRun = new int[pco.length][totalRuns];
+		int[] avgGenPco = new int[pco.length];
+		Population[] populations = new Population[4];
+		for (int i = 0 ; i < pco.length ; i++) {
+			System.out.println("====PCO " + pco[i] + "====");
+			for (int runCount = 0; runCount < totalRuns; runCount++) {
 				populations[i] = new Population(seedVal);
 				populations[i].setPco(pco[i]);
-				System.out.println("====PCO " + populations[i].getPco() + "====");
-				
-				populations[i].printPopulation();
+				if (runCount == 0) {
+					populations[i].printPopulation();
+				}
 			
 				while (!populations[i].maxFitnessAchieved()) {
-					populations[i].crossover();
+					// Perform cross-over on populations with pco > 0
+					if (pco[i] != 0) {
+						populations[i].crossover();
+					}
+					else {
+						populations[i].setGenCount(populations[i].getGenCount() + 1);
+					}
 					if (!populations[i].maxFitnessAchieved()) {
 						populations[i].mutate();
 						if (populations[i].maxFitnessAchieved()){
@@ -88,42 +92,54 @@ public class GeneticAlgorithm {
 					}
 					
 				}
-				System.out.println(populations[i].getGenCount());
-				System.out.println(populations[i].getMaxFitMethod()+"\n\n\n");
-				pcoCount[i] = populations[i].getGenCount();
-				pcoCounters += pcoCount[i];
-				pcoPop[i][pcoLoop] = populations[i].getGenCount();
-			}
-			if(pcoLoop%5 == 0)
-			{
-				avgPco[j] = pcoCounters/20;
-				++j;
+				genCountPerRun[i][runCount] = populations[i].getGenCount();
 			}
 		}
-		for(int a = 0 ; a < 4 ; a++)
-		{
-			System.out.println(avgPco[a]);
-		}
-		PopulationPlot[] pcoChart = null;
-		for(int ii = 0 ; ii < 4 ; ii++)
-		{
-			pcoChart[ii] = new PopulationPlot(
-					"Experiment 1", 
-					"Experiment 1", pcoPop[ii]);
-				pcoChart[ii].pack();
-				pcoChart[ii].setVisible(true);
+		for (int i = 0; i < pco.length; i++) {
+			avgGenPco[i] = getAverageGenCount(genCountPerRun[i]);
 		}
 		
+		for(int a = 0 ; a < pco.length ; a++)
+		{
+			System.out.print("Average gen count for pco " + pco[a] + ": ");
+			System.out.println(avgGenPco[a]);
+		}
+		
+		PopulationPlot[] genCountRunPlot = new PopulationPlot[pco.length];
+		String pcoChartString;
+		for (int i = 0; i < pco.length; i++) {
+			pcoChartString = "Generation Count for PCO " + pco[i];
+			genCountRunPlot[i] = new PopulationPlot(
+					"Experiment 2",
+					pcoChartString,
+					genCountPerRun[i]);
+		}
 		
 		PopulationPlot pcoChartAvg = new PopulationPlot(
 				"Experiment 2: PCO Averages" , 
-				"Experiment 2: PCO Averages", pco, avgPco);
+				"Experiment 2: PCO Averages", pco, avgGenPco);
 		
 		pcoChartAvg.pack();
 	    RefineryUtilities.centerFrameOnScreen(pcoChartAvg);
 	    pcoChartAvg.setVisible(true);
+	    
+	    for (PopulationPlot chart: genCountRunPlot) {
+	    	chart.pack();
+	    	RefineryUtilities.centerFrameOnScreen(chart);
+	    	chart.setVisible(true);
+	    }
 	}
-
 	
-	
+	private static int getAverageGenCount(int[] pcoGenArr) {
+		int average = 0;
+		int sum = 0;
+		
+		for (int genCount: pcoGenArr) {
+			sum += genCount;
+		}
+		
+		average = sum/(pcoGenArr.length);
+		
+		return average;
+	}
 }

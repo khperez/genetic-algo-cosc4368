@@ -8,7 +8,7 @@ public class Population {
 	
 	private String maxFitMethod;
 	private int[] chromosomes;
-	private int genCount;
+	private int genCount = 1;
 	private static int counter=0;
 	private static int genCountAvg=0;
 	private double pco;
@@ -21,7 +21,6 @@ public class Population {
 	Population(int randSeed){
 		maxFitMethod = null;
 		chromosomes = randChromosomes(randSeed);
-		genCount = 1;
 	}
 	
 	public static int[] randChromosomes(){
@@ -226,6 +225,10 @@ public class Population {
 	
 	public double getPco() {
 		return pco;
+	}
+	
+	public void setGenCount(int value) {
+		this.genCount = value;
 	}
 	
 
