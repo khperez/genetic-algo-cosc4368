@@ -8,7 +8,7 @@ public class GeneticAlgorithm {
 		
 		String crossover = "cross-over";
 		String mutation = "mutation";
-		int[] popCount = new int[20];
+		int[] popCount = new int[20]; 
 
 		/* 
 		 * Experiment 1
@@ -18,9 +18,8 @@ public class GeneticAlgorithm {
 		 *  
 		 */
 	  
-		Population[] popEx = new Population[20];
-		for(int i = 0 ; i < popEx.length ; i++)
-		{
+		Population[] popEx = new Population[20]; //Create 20 chromosomes for each population.
+		for(int i = 0 ; i < popEx.length ; i++){
 			popEx[i] = new Population(0.7);
 			popEx[i].printPopulation();
 			while (!popEx[i].maxFitnessAchieved()) {
@@ -36,11 +35,15 @@ public class GeneticAlgorithm {
 				}
 				
 			}
-			System.out.println(popEx[i].getGenCount());
-			System.out.println(popEx[i].getMaxFitMethod()+"\n\n\n");
-			popCount[i] = popEx[i].getGenCount();
+			//# of generations until a fitness level of 10 was achieved.
+			System.out.println(popEx[i].getGenCount()); 
+			//Check to see if max fitness was achieved through cross over or mutation
+			System.out.println(popEx[i].getMaxFitMethod()+"\n\n\n"); 
+			//Used for PopulationPlot, getting # of generations until max.
+			popCount[i] = popEx[i].getGenCount(); 
 		}
 		
+		//popCount[] passed to generate plot for experiment 1.
 		PopulationPlot popChart = new PopulationPlot(
 				"Experiment 1", 
 				"Experiment 1", popCount);
@@ -58,15 +61,18 @@ public class GeneticAlgorithm {
 		 * 
 		 */
 
+	    //seedVal is used to ensure the initial population is always used.
 		int seedVal = (int) System.currentTimeMillis();
 		double[] pco = {0.3, 0.5, 0.9, 0};
 		int totalRuns = 20;
 		int[][] genCountPerRun = new int[pco.length][totalRuns];
 		int[] avgGenPco = new int[pco.length];
 		Population[] populations = new Population[4];
+		
 		for (int i = 0 ; i < pco.length ; i++) {
 			System.out.println("====PCO " + pco[i] + "====");
 			for (int runCount = 0; runCount < totalRuns; runCount++) {
+				//Single seed ensures Random # generator will produce identical initial population
 				populations[i] = new Population(seedVal);
 				populations[i].setPco(pco[i]);
 				if (runCount == 0) {
@@ -95,6 +101,7 @@ public class GeneticAlgorithm {
 				genCountPerRun[i][runCount] = populations[i].getGenCount();
 			}
 		}
+		//Array of PCO Generator values to be used in plot
 		for (int i = 0; i < pco.length; i++) {
 			avgGenPco[i] = getAverageGenCount(genCountPerRun[i]);
 		}

@@ -13,11 +13,13 @@ public class Population {
 	private static int genCountAvg=0;
 	private double pco;
 	
+	//Whenever Population object is called a new population will be created
 	Population(double pco){
 		this.pco = pco;
 		this.chromosomes = randChromosomes();
 	}
-	
+		
+	//Population for identical seed value
 	Population(int randSeed){
 		maxFitMethod = null;
 		chromosomes = randChromosomes(randSeed);
@@ -29,6 +31,7 @@ public class Population {
 		  int j = 0;
 		  while(j < 20)
 		  {
+			//Converted 10 1010 1010 to decimal
 		    genChromosome[j] = randChromo.nextInt()%1023 + 1;
 		    if((genChromosome[j] > 0) && (genChromosome[j] < 1023))
 		    {
@@ -123,11 +126,15 @@ public class Population {
 	
 	public void mutate(){
 		Random select = new Random(System.currentTimeMillis());
+		//mutator is used to select which chromosome to mutate
 		int mutator = select.nextInt()%20;
 		while(mutator < 0){
+			//mutator must be between 0-19
 			mutator = select.nextInt()%20;
 		}
+
 		int chromosome = chromosomes[mutator];
+		//mutatedBit is used to select which bit to convert
 		int mutatedBit = select.nextInt()%10;
 		while(mutatedBit < 0){
 			mutatedBit = select.nextInt()%10;
