@@ -17,11 +17,14 @@ public class GeneticAlgorithm {
 		 * fitness value.
 		 *  
 		 */
-	  
-		Population[] popEx = new Population[20]; //Create 20 chromosomes for each population.
+		System.out.println("Experiment 1\n");
+		
+		//Create 20 randomly-generated populations
+		Population[] popEx = new Population[20];
 		for(int i = 0 ; i < popEx.length ; i++){
 			popEx[i] = new Population(0.7);
 			popEx[i].printPopulation();
+			// Perform cross-over and mutation until a fitness of 10 is discovered
 			while (!popEx[i].maxFitnessAchieved()) {
 				popEx[i].crossover();
 				if (!popEx[i].maxFitnessAchieved()) {
@@ -33,15 +36,16 @@ public class GeneticAlgorithm {
 				else {
 					popEx[i].setMaxFitMethod(crossover);
 				}
-				
+				popEx[i].printFitnessValues();
 			}
 			//# of generations until a fitness level of 10 was achieved.
-			System.out.println(popEx[i].getGenCount()); 
-			//Check to see if max fitness was achieved through cross over or mutation
-			System.out.println(popEx[i].getMaxFitMethod()+"\n\n\n"); 
+			System.out.println("1010101010 discovered at generation " + popEx[i].getGenCount()); 
 			//Used for PopulationPlot, getting # of generations until max.
 			popCount[i] = popEx[i].getGenCount(); 
 		}
+		
+		System.out.print("Average gen count for pco " + popEx[0].getPco() + ": ");
+		System.out.println(getAverageGenCount(popCount));
 		
 		//popCount[] passed to generate plot for experiment 1.
 		PopulationPlot popChart = new PopulationPlot(
@@ -78,7 +82,7 @@ public class GeneticAlgorithm {
 				if (runCount == 0) {
 					populations[i].printPopulation();
 				}
-			
+				// Perform cross-over and mutation until a fitness of 10 is discovered
 				while (!populations[i].maxFitnessAchieved()) {
 					// Perform cross-over on populations with pco > 0
 					if (pco[i] != 0) {
