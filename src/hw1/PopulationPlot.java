@@ -13,10 +13,10 @@ public class PopulationPlot extends ApplicationFrame
 	public PopulationPlot(String applicationTitle, String chartTitle, int[] popCount)
 	{
 		super(applicationTitle);
-		JFreeChart lineChart = ChartFactory.createBarChart3D(
+		JFreeChart barGraph = ChartFactory.createBarChart3D(
 			chartTitle,"Run Number", "Number of Generations", createDataset(popCount), PlotOrientation.VERTICAL, true,true,false);
          
-		ChartPanel chartPanel = new ChartPanel(lineChart);
+		ChartPanel chartPanel = new ChartPanel(barGraph);
 		chartPanel.setPreferredSize( new java.awt.Dimension(500 , 300));
 		setContentPane(chartPanel);
 	}
@@ -24,10 +24,10 @@ public class PopulationPlot extends ApplicationFrame
 	public PopulationPlot(String applicationTitle, String chartTitle, double[] popPco, int[] popCount)
 	{
 		super(applicationTitle);
-		JFreeChart lineChart = ChartFactory.createBarChart3D(
+		JFreeChart barGraph = ChartFactory.createBarChart3D(
 			chartTitle,"PCO", "Number of Generations", createDataset2(popPco, popCount), PlotOrientation.VERTICAL, true,true,false);
          
-		ChartPanel chartPanel = new ChartPanel(lineChart);
+		ChartPanel chartPanel = new ChartPanel(barGraph);
 		chartPanel.setPreferredSize( new java.awt.Dimension(500 , 300));
 		setContentPane(chartPanel);
 	}

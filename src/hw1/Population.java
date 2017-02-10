@@ -6,11 +6,8 @@ import java.util.Vector;
 
 public class Population {
 	
-	private String maxFitMethod;
 	private int[] chromosomes;
 	private int genCount = 1;
-	private static int counter=0;
-	private static int genCountAvg=0;
 	private double pco;
 	
 	//Whenever Population object is called a new population will be created
@@ -21,7 +18,6 @@ public class Population {
 		
 	//Population for identical seed value
 	Population(int randSeed){
-		maxFitMethod = null;
 		chromosomes = randChromosomes(randSeed);
 	}
 	
@@ -125,7 +121,7 @@ public class Population {
 	}
 	
 	public void mutate(){
-		Random select = new Random(System.currentTimeMillis());
+		Random select = new Random();
 		//mutator is used to select which chromosome to mutate
 		int mutator = select.nextInt()%20;
 		while(mutator < 0){
@@ -177,14 +173,6 @@ public class Population {
 		return this.chromosomes;
 	}
 	
-	public void setMaxFitMethod(String maxFitMethod) {
-		this.maxFitMethod = maxFitMethod;
-	}
-	
-	public String getMaxFitMethod() {
-		return maxFitMethod;
-	}
-	
 	public void printChromosomes() {
 		System.out.println("Chromosome:");
 		for (int i = 0; i < chromosomes.length; i++) {
@@ -211,19 +199,6 @@ public class Population {
 	
 	public int getGenCount() {
 		return genCount;
-	}
-	
-	public int setGenCountAvg(int genCount)
-	{
-		counter++;
-		genCountAvg += genCount;
-		genCountAvg /= counter;
-		return genCountAvg;
-	}
-	
-	public void getGenCountAvg()
-	{
-		System.out.println("Generation Count Average: " + genCountAvg);
 	}
 	
 	public void setPco(double pco) {

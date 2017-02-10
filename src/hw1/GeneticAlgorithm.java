@@ -6,8 +6,6 @@ public class GeneticAlgorithm {
 			
 	public static void main(String[] args) {
 		
-		String crossover = "cross-over";
-		String mutation = "mutation";
 		int[] popCount = new int[20]; 
 
 		/* 
@@ -29,12 +27,6 @@ public class GeneticAlgorithm {
 				popEx[i].crossover();
 				if (!popEx[i].maxFitnessAchieved()) {
 					popEx[i].mutate();
-					if (popEx[i].maxFitnessAchieved()){
-						popEx[i].setMaxFitMethod(mutation);
-					}
-				}
-				else {
-					popEx[i].setMaxFitMethod(crossover);
 				}
 				popEx[i].printFitnessValues();
 			}
@@ -93,17 +85,13 @@ public class GeneticAlgorithm {
 					}
 					if (!populations[i].maxFitnessAchieved()) {
 						populations[i].mutate();
-						if (populations[i].maxFitnessAchieved()){
-							populations[i].setMaxFitMethod(mutation);
-						}
+	
 					}
-					else {
-						populations[i].setMaxFitMethod(crossover);
-					}
-					
 				}
 				genCountPerRun[i][runCount] = populations[i].getGenCount();
 			}
+			//# of generations until a fitness level of 10 was achieved.
+			System.out.println("1010101010 discovered at generation " + populations[i].getGenCount()); 
 		}
 		//Array of PCO Generator values to be used in plot
 		for (int i = 0; i < pco.length; i++) {
